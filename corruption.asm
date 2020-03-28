@@ -88,10 +88,15 @@ sub_0: assembly {
       lt
       // stack: selector tag_5 4 calldatasize-4 calldatasize-4<0x40
       iszero
+      // stack: selector tag_5 4 calldatasize-4 !(calldatasize-4<0x40)
       tag_6
+      // stack: selector tag_5 4 calldatasize-4 !(calldatasize-4<0x40) tag_6
       jumpi
+      // stack: selector tag_5 4 calldatasize-4
       0x00
+      // stack: selector tag_5 4 calldatasize-4 0
       dup1
+      // stack: selector tag_5 4 calldatasize-4 0 0
       revert
     tag_6:
       // stack: selector tag_5 4 calldatasize-4

@@ -61,7 +61,8 @@ function deployAndRunContract() {
 			}).then(function(newContract) {
 				console.log("Deployed corruptible contract");
 				console.log("calling exploitable target, exploiting for " + addresses[1]);
-				newContract.methods.corruptMemory('0x800000000000000000000000000000000000000000000000000000000000000', '0x800000000000000000000000000000000000000000000000000000000000000').send({
+				newContract.methods.corruptMemory('0x800000000000000000000000000000000000000000000000000000000000000',
+                                                  '1234567890').send({
 					from: addresses[1],
 					gas: 1000000,
 					gasPrice,
