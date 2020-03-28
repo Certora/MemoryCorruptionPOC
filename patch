@@ -1,0 +1,22 @@
+diff --git a/libsolidity/codegen/ExpressionCompiler.cpp b/libsolidity/codegen/ExpressionCompiler.cpp
+index 58992426b..c68ad9478 100644
+--- a/libsolidity/codegen/ExpressionCompiler.cpp
++++ b/libsolidity/codegen/ExpressionCompiler.cpp
+@@ -1010,8 +1010,16 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
+ 			if (arrayType.isByteArray())
+ 				// Round up to multiple of 32
+ 				m_context << u256(31) << Instruction::ADD << u256(31) << Instruction::NOT << Instruction::AND;
+-			else
++			else {
+ 				m_context << arrayType.baseType()->memoryHeadSize() << Instruction::MUL;
++				// Stack: memptr requested_length data_size
++				m_context << arrayType.baseType()->memoryHeadSize() << Instruction::DUP2 << Instruction::DIV;
++				// Stack: memptr requested_length data_size data_size/bytes_per_elt
++				m_context << Instruction::DUP3 << Instruction::EQ;
++				auto success = m_context.appendConditionalJump();
++				m_context.appendInvalid();
++				m_context << success;
++			}
+ 			// stacK: memptr requested_length data_size
+ 			m_context << u256(32) << Instruction::ADD;
+ 			m_context << Instruction::DUP3 << Instruction::ADD;
